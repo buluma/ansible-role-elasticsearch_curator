@@ -4,7 +4,7 @@ Elasticsearch curator for Linux.
 
 |GitHub|GitLab|Quality|Downloads|Version|Issues|Pull Requests|
 |------|------|-------|---------|-------|------|-------------|
-|[![github](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-elasticsearch_curator)|[![quality](https://img.shields.io/ansible/quality/54983)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![downloads](https://img.shields.io/ansible/role/d/54983)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/pulls/)|
+|[![github](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-elasticsearch_curator)|[![quality](https://img.shields.io/ansible/quality/58513)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![downloads](https://img.shields.io/ansible/role/d/58513)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/pulls/)|
 
 ## [Example Playbook](#example-playbook)
 
@@ -39,7 +39,7 @@ This example is taken from `molecule/default/converge.yml` and is tested on each
   roles:
     - role: geerlingguy.repo-epel
       when: ansible_os_family == 'RedHat'
-    - role: geerlingguy.elasticsearch-curator
+    - role: buluma.elasticsearch_curator
 ```
 
 
