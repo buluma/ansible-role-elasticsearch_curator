@@ -13,3 +13,4 @@ exclude_paths:
 
 skip_list:  # or 'skip_list' to silence them completely
   - fqcn-builtins
+  - role-name
