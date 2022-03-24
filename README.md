@@ -108,6 +108,14 @@ elasticsearch_curator_pip_package: 'python-pip'
 
 - pip packages listed in [requirements.txt](https://github.com/buluma/ansible-role-elasticsearch_curator/blob/main/requirements.txt).
 
+## [Status of used roles](#status-of-requirements)
+
+The following roles are used to prepare a system. You can prepare your system in another way.
+
+| Requirement | GitHub | GitLab |
+|-------------|--------|--------|
+|[buluma.elasticsearch_curator](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Build Status GitHub](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-elasticsearch_curator)|
+|[geerlingguy.repo-epel](https://galaxy.ansible.com/buluma/geerlingguy.repo-epel)|[![Build Status GitHub](https://github.com/buluma/geerlingguy.repo-epel/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/geerlingguy.repo-epel/actions)|[![Build Status GitLab ](https://gitlab.com/buluma/geerlingguy.repo-epel/badges/master/pipeline.svg)](https://gitlab.com/buluma/geerlingguy.repo-epel)|
 
 ## [Context](#context)
 
