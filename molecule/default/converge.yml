@@ -27,4 +27,4 @@
   roles:
     - role: geerlingguy.repo-epel
       when: ansible_os_family == 'RedHat'
-    - role: geerlingguy.elasticsearch-curator
+    - role: buluma.elasticsearch_curator
