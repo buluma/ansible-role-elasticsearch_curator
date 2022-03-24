@@ -1,0 +1,8 @@
+---
+#
+# Ansible managed
+#
+repository:
+  description: Elasticsearch curator for Linux.
+  homepage: https://buluma.github.io/
+  topics: web, system, monitoring, elasticsearch, curator, efk, elk, ansible, molecule, tox, playbook, hacktoberfest

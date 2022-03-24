@@ -1,103 +1,146 @@
-# Ansible Role: Elasticsearch Curator
+# [elasticsearch_curator](#elasticsearch_curator)
 
-[![CI](https://github.com/geerlingguy/ansible-role-elasticsearch-curator/workflows/CI/badge.svg?event=push)](https://github.com/geerlingguy/ansible-role-elasticsearch-curator/actions?query=workflow%3ACI)
+Elasticsearch curator for Linux.
 
-An Ansible Role that installs [Elasticsearch Curator](https://github.com/elasticsearch/curator) on RedHat/CentOS or Debian/Ubuntu.
+|GitHub|GitLab|Quality|Downloads|Version|Issues|Pull Requests|
+|------|------|-------|---------|-------|------|-------------|
+|[![github](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![gitlab](https://gitlab.com/buluma/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/buluma/ansible-role-elasticsearch_curator)|[![quality](https://img.shields.io/ansible/quality/54983)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![downloads](https://img.shields.io/ansible/role/d/54983)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/pulls/)|
 
-## Requirements
+## [Example Playbook](#example-playbook)
 
-None, but it's a lot more helpful if you have Elasticsearch running somewhere :)
+This example is taken from `molecule/default/converge.yml` and is tested on each push, pull request and release.
+```yaml
+---
+- name: Converge
+  hosts: all
+  become: true
 
-On RedHat/CentOS, make sure you have the EPEL repository configured, so the `python-pip` package can be installed. You can install the EPEL repo by simply adding `geerlingguy.repo-epel` to your playbook's roles.
+  pre_tasks:
+    - name: Install cron (RedHat).
+      yum: name=cronie state=present
+      when: ansible_os_family == 'RedHat'
 
-## Role Variables
+    - name: Install cron (Debian).
+      apt: name=cron state=present
+      when: ansible_distribution == 'Debian'
 
-Available variables are listed below, along with default values (see `defaults/main.yml`):
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_distribution == 'Ubuntu'
 
-    elasticsearch_curator_version: ''
+    - name: Set pip package for newer distros.
+      set_fact:
+        elasticsearch_curator_pip_package: python3-pip
+      when: >
+        (ansible_distribution == 'Debian' and ansible_distribution_major_version == '10') or
+        (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version >= '18') or
+        (ansible_os_family == 'RedHat' and ansible_distribution_major_version == '8')
 
-The version of `elasticsearch-curator` to install. Available versions are listed on the [Python Package Index](https://pypi.org/project/elasticsearch-curator/). By default, no version is specified, so the latest version will be installed.
+  roles:
+    - role: geerlingguy.repo-epel
+      when: ansible_os_family == 'RedHat'
+    - role: geerlingguy.elasticsearch-curator
+```
 
-    elasticsearch_curator_cron_jobs:
-      - name: "Run elasticsearch curator actions."
-        job: "/usr/local/bin/curator ~/.curator/action.yml"
-        minute: 0
-        hour: 1
 
-A list of cron jobs. Typically you would run one cron job using the actions defined in `action.yml`, but you can split up cron jobs or use the `curator_cli` to run actions individually instead of via an action file. You can add any of `minute`, `hour`, `day`, `weekday`, and `month` to the cron jobs—values that are not explicitly set will default to `*`. You can also use `state` to define whether the job should be `present` or `absent`.
+## [Role Variables](#role-variables)
 
-    elasticsearch_curator_config_directory: ~/.curator
+The default values for the variables are set in `defaults/main.yml`:
+```yaml
+---
+elasticsearch_curator_version: ''
 
-The directory inside which Curator's configuration (and action file) will be stored.
+elasticsearch_curator_cron_jobs:
+  - name: "Run elasticsearch curator actions."
+    job: "/usr/local/bin/curator ~/.curator/action.yml"
+    minute: 0
+    hour: 1
 
-    elasticsearch_curator_hosts:
-      - 'localhost:9200'
-    elasticsearch_curator_http_auth: ''
+elasticsearch_curator_config_directory: ~/.curator
 
-These variables control parameters used in the default `elasticsearch_curator_yaml`. If you define your own custom `elasticsearch_curator_yaml`, you may not need to define or override these variables. `_hosts` is a list of hosts with ports, and `_http_auth` is a basic `http_auth` `user:pass` string, if your Elasticsearch instance requires basic HTTP authorization.
+elasticsearch_curator_hosts:
+  - 'localhost:9200'
+elasticsearch_curator_http_auth: ''
+elasticsearch_curator_yaml: |
+  ---
+  client:
+    hosts: {{ elasticsearch_curator_hosts | to_yaml }}
+    url_prefix:
+    use_ssl: False
+    certificate:
+    client_cert:
+    client_key:
+    ssl_no_validate: False
+    http_auth: {{ elasticsearch_curator_http_auth }}
+    timeout: 30
+    master_only: False
+  logging:
+    loglevel: INFO
+    logfile:
+    logformat: default
+    blacklist: ['elasticsearch', 'urllib3']
 
-    elasticsearch_curator_yaml: |
-      ---
-      client:
-        hosts: {{ elasticsearch_curator_hosts | to_yaml }}
-        url_prefix:
-        use_ssl: False
-        certificate:
-        client_cert:
-        client_key:
-        ssl_no_validate: False
-        http_auth: {{ elasticsearch_curator_http_auth }}
-        timeout: 30
-        master_only: False
-      logging:
-        loglevel: INFO
-        logfile:
-        logformat: default
-        blacklist: ['elasticsearch', 'urllib3']
+elasticsearch_curator_action_yaml: |
+  ---
+  actions:
+    1:
+      action: delete_indices
+      options:
+        ignore_empty_list: True
+        disable_action: False
+      filters:
+      - filtertype: pattern
+        kind: prefix
+        value: logstash-
+        exclude:
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 45
+        exclude:
 
-This YAML goes into the file `~/.curator/curator.yml` and stores the connection details Elasticsearch Curator uses to when connecting to Elasticsearch, as well as Curator logging configuration.
+elasticsearch_curator_pip_package: 'python-pip'
+```
 
-    elasticsearch_curator_action_yaml: |
-      ---
-      actions:
-        1:
-          action: delete_indices
-          options:
-            ignore_empty_list: True
-            disable_action: False
-          filters:
-          - filtertype: pattern
-            kind: prefix
-            value: logstash-
-            exclude:
-          - filtertype: age
-            source: name
-            direction: older
-            timestring: '%Y.%m.%d'
-            unit: days
-            unit_count: 45
-            exclude:
+## [Requirements](#requirements)
 
-This YAML goes into the file `~/.curator/action.yml` and defines the actions Curator performs when the default cron job is run. See documentation: [Curator actions file](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actionfile.html).
+- pip packages listed in [requirements.txt](https://github.com/buluma/ansible-role-elasticsearch_curator/blob/main/requirements.txt).
 
-    elasticsearch_curator_pip_package: 'python-pip'
 
-System pip package which needs to be installed. For newer OSes or when using Python 3, you may need to override this and change it to `python3-pip`.
+## [Context](#context)
 
-## Dependencies
+This role is a part of many compatible roles. Have a look at [the documentation of these roles](https://buluma.co.ke/) for further information.
 
-  - geerlingguy.repo-epel (RedHat/CentOS only)
+Here is an overview of related roles:
 
-## Example Playbook
+![dependencies](https://raw.githubusercontent.com/buluma/ansible-role-elasticsearch_curator/png/requirements.png "Dependencies")
 
-    - hosts: search
-      roles:
-        - { role: geerlingguy.elasticsearch-curator }
+## [Compatibility](#compatibility)
 
-## License
+This role has been tested on these [container images](https://hub.docker.com/u/buluma):
 
-MIT / BSD
+|container|tags|
+|---------|----|
+|el|all|
+|debian|all|
+|ubuntu|all|
 
-## Author Information
+The minimum version of Ansible required is 2.4, tests have been done to:
 
-This role was created in 2014 by [Jeff Geerling](https://www.jeffgeerling.com/), author of [Ansible for DevOps](https://www.ansiblefordevops.com/).
+- The previous version.
+- The current version.
+- The development version.
+
+
+
+If you find issues, please register them in [GitHub](https://github.com/buluma/ansible-role-elasticsearch_curator/issues)
+
+## [License](#license)
+
+Apache-2.0
+
+## [Author Information](#author-information)
+
+[buluma](https://buluma.github.io/)
