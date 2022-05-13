@@ -1,0 +1,11 @@
+digraph PhiloDilemma {
+  label = "Michael Buluma" ;
+  overlap=false
+  {
+    "elasticsearch_curator" [fillcolor=yellow style=filled penwidth=3]
+    "buluma.elasticsearch_curator" [fillcolor=green style=filled]
+    "geerlingguy.repo-epel" [fillcolor=green style=filled]
+  }
+  "elasticsearch_curator" -> "buluma.elasticsearch_curator"
+  "elasticsearch_curator" -> "geerlingguy.repo-epel"
+}
