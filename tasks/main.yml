@@ -1,8 +1,10 @@
 ---
-- include: setup-RedHat.yml
+- name: Setup RedHat
+  ansible.builtin.import_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
-- include: setup-Debian.yml
+- name: Setup Debian
+  ansible.builtin.import_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
 - name: Install Elasticsearch Curator via pip.
