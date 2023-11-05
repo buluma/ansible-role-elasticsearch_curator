@@ -2,9 +2,9 @@
 
 Elasticsearch curator for Linux.
 
-|GitHub|GitLab|Quality|Downloads|Version|Issues|Pull Requests|
-|------|------|-------|---------|-------|------|-------------|
-|[![github](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![gitlab](https://gitlab.com/shadowwalker/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/shadowwalker/ansible-role-elasticsearch_curator)|[![quality](https://img.shields.io/ansible/quality/58513)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![downloads](https://img.shields.io/ansible/role/d/58513)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/pulls/)|
+|GitHub|GitLab|Downloads|Version|Issues|Pull Requests|
+|------|------|-------|-------|------|-------------|
+|[![github](https://github.com/buluma/ansible-role-elasticsearch_curator/workflows/Ansible%20Molecule/badge.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/actions)|[![gitlab](https://gitlab.com/shadowwalker/ansible-role-elasticsearch_curator/badges/master/pipeline.svg)](https://gitlab.com/shadowwalker/ansible-role-elasticsearch_curator)|[![downloads](https://img.shields.io/ansible/role/d/4697)](https://galaxy.ansible.com/buluma/elasticsearch_curator)|[![Version](https://img.shields.io/github/release/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/releases/)|[![Issues](https://img.shields.io/github/issues/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/issues/)|[![PullRequests](https://img.shields.io/github/issues-pr-closed-raw/buluma/ansible-role-elasticsearch_curator.svg)](https://github.com/buluma/ansible-role-elasticsearch_curator/pulls/)|
 
 ## [Example Playbook](#example-playbook)
 
@@ -138,7 +138,7 @@ This role has been tested on these [container images](https://hub.docker.com/u/b
 |[Debian](https://hub.docker.com/repository/docker/buluma/debian/general)|all|
 |[Ubuntu](https://hub.docker.com/repository/docker/buluma/ubuntu/general)|all|
 
-The minimum version of Ansible required is 2.4, tests have been done to:
+The minimum version of Ansible required is 2.12, tests have been done to:
 
 - The previous version.
 - The current version.
