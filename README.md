@@ -1,4 +1,4 @@
-# [elasticsearch_curator](#elasticsearch_curator)
+# [Ansible role elasticsearch_curator](#elasticsearch_curator)
 
 Elasticsearch curator for Linux.
 
